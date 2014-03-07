@@ -26,7 +26,7 @@
         base.$label.addClass(base.options.className);
       }
 
-      // Check if the field is already filled in 
+      // Check if the field is already filled in
       // add a short delay to handle autocomplete
       setTimeout(function() {
         if (base.$field.val() !== "") {
@@ -155,7 +155,18 @@
       }
 
       // Find the referenced input or textarea element
-      field = document.getElementById( for_attr );
+
+      // Find the parent form and look for reference input or textarea element
+      // This is needed for one page apps where elements have dup ids
+      // For example, one page jquery mobile apps
+      var $parentForm = $(this).parents('form');
+
+      if($parentForm.length) {
+        field = $parentForm.find( '#' + for_attr ).get(0);
+      } else {
+        field = document.getElementById( for_attr );
+      }
+
       if ( !field ) {
         return; // No element found
       }
